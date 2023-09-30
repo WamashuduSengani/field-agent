@@ -16,7 +16,6 @@ import { QueryClientProvider, QueryClient } from "react-query";
 
 const queryClient = new QueryClient();
 
-// Create a function to check if the user is authenticated
 const isAuthenticated = () => {
   const token = queryClient.getQueryData("authenticationToken");
   return !!token;

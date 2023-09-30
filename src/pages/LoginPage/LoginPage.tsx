@@ -22,7 +22,7 @@ const LoginPage = () => {
 
   const handleSubmit = async (values: any) => {
     try {
-      const response = await fetch("api.mocki.io/v2/3228ffe5", {
+      const response = await fetch("https://api.mocki.io/v2/3228ffe5", {
         method: "POST",
         body: JSON.stringify(values),
         headers: {
