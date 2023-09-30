@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; 
 import {
   Container,
   Typography,
@@ -11,13 +12,35 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 const LoginPage = () => {
+  const navigate = useNavigate(); 
+  const [error, setError] = useState(""); 
+
   const validationSchema = Yup.object().shape({
     username: Yup.string().required("Username is required"),
     password: Yup.string().required("Password is required"),
   });
 
-  const handleSubmit = (values: any) => {
-    console.log(values);
+  const handleSubmit = async (values: any) => {
+    try {
+      const response = await fetch("api.mocki.io/v2/3228ffe5", {
+        method: "POST",
+        body: JSON.stringify(values),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        // Redirecting to the Home Page upon successful login
+        navigate("/home");
+      } else {
+        // Handle authentication errors
+        setError("Authentication failed. Please check your credentials.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setError("An error occurred during authentication.");
+    }
   };
 
   return (
@@ -73,6 +96,11 @@ const LoginPage = () => {
             </Box>
           </Form>
         </Formik>
+        {error && (
+          <Typography variant="body2" color="error">
+            {error}
+          </Typography>
+        )}
       </Box>
     </Container>
   );
